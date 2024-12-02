@@ -1,0 +1,48 @@
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: arfaouibadi19@gmail.com
+    password: uyes csys ybrt kxdy
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+  application:
+    name: alamni-backend
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 1078334974836-bo9ik91k17i3qrqae2tvio52ih8h3n4m.apps.googleusercontent.com
+            client-secret: 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
+            redirect-uri : http://localhost:8000/login/oauth2/code/{registrationId}
+            scope:
+                - email
+                - profile
+          github:
+            client-id: Iv23liUvjt9uPFsOCefH
+            client-secret: 394e40d1e7477aebc743c1de3bf2868adb1d758a
+            redirect-uri : http://localhost:8000/login/oauth2/code/github
+            scope:
+                  - user:email
+                  - read:user
+  data:
+    mongodb:
+      uri: mongodb+srv://arfaouibadi19:SEdRxR0mHbpmxvv2@cluster0.yfo9o.mongodb.net/AlamniDB?retryWrites=true&w=majority&appName=Cluster0
+
+
+server:
+  port: 8000
+
+
+
+jwtSecret: "alamniSecret"
+jwtExpirationMs: 86400000
+
+
