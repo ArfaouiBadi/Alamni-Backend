@@ -9,6 +9,7 @@ import com.example.alamnibackend.models.User;
 import com.example.alamnibackend.models.VerificationToken;
 import com.example.alamnibackend.payload.request.LoginRequest;
 import com.example.alamnibackend.payload.request.SignupRequest;
+import com.example.alamnibackend.payload.response.EmailVerificationResponse;
 import com.example.alamnibackend.payload.response.JwtResponse;
 import com.example.alamnibackend.payload.response.MessageResponse;
 import com.example.alamnibackend.repository.RoleRepository;
@@ -163,5 +164,23 @@ public class AuthController {
 		user.setEnabled(true);
 		userRepository.save(user);
 		return ResponseEntity.ok(new MessageResponse("Account verified successfully!"));
+	}
+
+	/**
+	 * Check if the user's email is verified (enabled).
+	 *
+	 * @param email The email of the user to check.
+	 * @return A ResponseEntity indicating whether the user is enabled or not.
+	 */
+	@GetMapping("/check-email-verification")
+	public ResponseEntity<?> checkEmailVerification(@RequestParam("email") String email) {
+		Optional<User> userOptional = Optional.ofNullable(userRepository.findByEmail(email));
+		if (userOptional.isPresent()) {
+			User user = userOptional.get();
+			boolean isEnabled = user.isEnabled();
+			return ResponseEntity.ok(new EmailVerificationResponse("User enabled status: " + isEnabled, isEnabled));
+		} else {
+			return ResponseEntity.badRequest().body(new EmailVerificationResponse("Error: User not found.", false));
+		}
 	}
 }
