@@ -62,12 +62,11 @@ public class AuthController {
 	 */
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-		System.out.println("Sign in");
+
 		// Authenticate the user with the provided username and password
 		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),
+				new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),
 						loginRequest.getPassword()));
-
 		// Set the authentication in the security context
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -108,7 +107,8 @@ public class AuthController {
 		}
 
 		// Check if the email is already in use
-		if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+		Optional<User> userOptional = Optional.ofNullable(userRepository.findByEmail(signUpRequest.getEmail()));
+		if (userOptional.isPresent()) {
 			return ResponseEntity
 					.badRequest()
 					.body(new MessageResponse("Error: Email is already in use!"));

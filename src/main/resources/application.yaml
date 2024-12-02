@@ -36,7 +36,6 @@ spring:
     mongodb:
       uri: mongodb+srv://arfaouibadi19:SEdRxR0mHbpmxvv2@cluster0.yfo9o.mongodb.net/AlamniDB?retryWrites=true&w=majority&appName=Cluster0
 
-
 server:
   port: 8000
 
@@ -44,5 +43,7 @@ server:
 
 jwtSecret: "alamniSecret"
 jwtExpirationMs: 86400000
-
+logging:
+  level:
+    org.springframework.web: DEBUG
 

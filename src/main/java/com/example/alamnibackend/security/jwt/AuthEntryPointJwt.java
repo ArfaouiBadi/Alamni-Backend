@@ -35,6 +35,11 @@ public class AuthEntryPointJwt implements AuthenticationEntryPoint {
 		// Log the unauthorized access attempt with the exception message
 		logger.error("Unauthorized error: {}", authException.getMessage());
 
+		// Log additional details for debugging
+		logger.debug("Request URI: {}", request.getRequestURI());
+		logger.debug("Request Method: {}", request.getMethod());
+		logger.debug("Remote Address: {}", request.getRemoteAddr());
+
 		// Send an HTTP response with a 401 Unauthorized status and an error message
 		response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error: Unauthorized");
 	}

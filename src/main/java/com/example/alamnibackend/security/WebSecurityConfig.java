@@ -49,10 +49,8 @@ public class WebSecurityConfig {
   @Bean
   public DaoAuthenticationProvider authenticationProvider() {
     DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(); // Create a new authentication provider
-
     authProvider.setUserDetailsService(userDetailsService); // Set the user details service
     authProvider.setPasswordEncoder(passwordEncoder()); // Set the password encoder
-
     return authProvider; // Return the configured authentication provider
   }
 
@@ -94,7 +92,7 @@ public class WebSecurityConfig {
             // Set unauthorized handler
             .sessionManagement(session ->
                     session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            // Set session policy to stateless
+            // Set session policy to stateless*/
             .authorizeHttpRequests(auth -> auth
                     // Configure authorization for HTTP requests
                     .requestMatchers("/api/auth/**").permitAll()
