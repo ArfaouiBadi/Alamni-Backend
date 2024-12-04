@@ -1,5 +1,6 @@
 package com.example.alamnibackend.controllers;
 
+import com.example.alamnibackend.models.ERole;
 import com.example.alamnibackend.models.Role;
 import com.example.alamnibackend.models.User;
 import com.example.alamnibackend.payload.response.MessageResponse;
@@ -11,9 +12,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class UserController {
 
     @Autowired
@@ -25,6 +28,7 @@ public class UserController {
 
     @GetMapping
     public List<User> getAllUsers() {
+        System.out.println("Get all users");
         return userRepository.findAll();
 
     }
@@ -57,5 +61,22 @@ public class UserController {
         } else {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: User not found."));
         }
+    }
+
+    @PutMapping("/{id}/roles")
+    public ResponseEntity<?> updateUserRoles(@PathVariable String id, @RequestBody List<String> roleNames) {
+        User user = userService.getUserById(id);
+        if (user == null) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: User not found."));
+        }
+        user.getRoles().clear();
+        for (String roleName : roleNames) {
+            Optional<Role> role = roleRepository.findByName(ERole.valueOf(roleName));
+            if (role.isPresent()) {
+                user.getRoles().add(role.get());
+            }
+        }
+        userRepository.save(user);
+        return ResponseEntity.ok(new MessageResponse("User roles updated successfully."));
     }
 }
