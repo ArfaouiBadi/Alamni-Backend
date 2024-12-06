@@ -62,7 +62,6 @@ public class AuthController {
 	 */
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-
 		// Authenticate the user with the provided username and password
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),
@@ -122,9 +121,9 @@ public class AuthController {
 				signUpRequest.getUsername(),
 				ERole.ROLE_USER,
 				encoder.encode(signUpRequest.getPassword()), // Encode the password
-				signUpRequest.getDateOfBirth()
+				signUpRequest.getDateOfBirth(),
+				0,1
 		);
-
 		// Assign the default role "ROLE_USER"
 		System.out.println("Role: " + roleRepository.findAll());
 		System.out.println("Role: " + roleRepository.findByName(ERole.ROLE_USER));
@@ -132,10 +131,8 @@ public class AuthController {
 		Role userRole = roleRepository.findByName(ERole.ROLE_USER)
 				.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
 		user.setRoles(Set.of(userRole));
-
 		// Save the user to the database
 		userRepository.save(user);
-
 		// Generate verification token
 		String token = UUID.randomUUID().toString();
 		VerificationToken verificationToken = new VerificationToken();

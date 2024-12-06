@@ -52,7 +52,9 @@ public class User {
   private Set<Role> roles = new HashSet<>();
   private boolean enabled = false;
 
-  public User(String email, String firstName, String lastName, String username, ERole role, String encode, LocalDate dateOfBirth) {
+  private int points ;
+  private int level ;
+  public User(String email, String firstName, String lastName, String username, ERole role, String encode, LocalDate dateOfBirth, int points, int level) {
     this.username = username;
     this.dateOfBirth = dateOfBirth;
     this.email = email;
@@ -62,6 +64,8 @@ public class User {
     this.roles = new HashSet<>();
     this.roles.add(new Role(role)); // Assuming Role has a constructor that accepts ERole
     this.enabled = false;
+    this.points = points;
+    this.level = level;
   }
 
 }

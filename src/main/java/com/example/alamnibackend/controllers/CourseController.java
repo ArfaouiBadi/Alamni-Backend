@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/courses")
+
 public class CourseController {
 
     @Autowired
@@ -33,12 +34,15 @@ public class CourseController {
 
     @PostMapping
     public Course createCourse(@RequestBody Course course) {
+        System.out.println(course);
         return courseService.createCourse(course);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateCourse(@PathVariable String id, @RequestBody Course courseDetails) {
-        Course updatedCourse = courseService.updateCourse(id, courseDetails);
+    @PutMapping
+    public ResponseEntity<?> updateCourse(@RequestBody Course courseDetails) {
+        System.out.println(courseDetails);
+        System.out.println(courseDetails.getId());
+        Course updatedCourse = courseService.updateCourse(courseDetails.getId(), courseDetails);
         if (updatedCourse != null) {
             return ResponseEntity.ok(updatedCourse);
         } else {

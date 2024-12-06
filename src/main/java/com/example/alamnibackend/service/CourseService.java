@@ -35,6 +35,10 @@ public class CourseService {
             course.setLevelRequired(courseDetails.getLevelRequired());
             course.setDuration(courseDetails.getDuration());
             course.setCategory(courseDetails.getCategory());
+            course.setModules(courseDetails.getModules());
+            course.setRewardSystem(courseDetails.getRewardSystem());
+            course.setImageUrl(courseDetails.getImageUrl());
+
             return courseRepository.save(course);
         }
         return null;
