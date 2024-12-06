@@ -10,6 +10,9 @@ spring:
           auth: true
           starttls:
             enable: true
+          ssl:
+            trust: "*"
+            protocols: "TLSv1.2"
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
   application:
