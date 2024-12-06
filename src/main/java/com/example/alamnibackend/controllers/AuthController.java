@@ -29,7 +29,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-@CrossOrigin(origins = "*", maxAge = 3600)
+
 @RestController // Indicate that this class is a REST controller
 @RequestMapping("/api/auth") // Base URL for authentication-related endpoints
 public class AuthController {
@@ -97,7 +97,7 @@ public class AuthController {
 	@PostMapping("/signup")
 	public ResponseEntity<?> registerUser(@RequestBody SignupRequest signUpRequest) {
 		System.out.println("Sign up");
-		System.out.println(signUpRequest.getUsername());
+		System.out.println(signUpRequest);
 		// Check if the username is already taken
 		if (userRepository.existsByUsername(signUpRequest.getUsername())) {
 			return ResponseEntity
