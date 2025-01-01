@@ -1,5 +1,6 @@
 package com.example.alamnibackend.controllers;
 
+import com.example.alamnibackend.models.CategoryCount;
 import com.example.alamnibackend.models.Course;
 import com.example.alamnibackend.payload.response.MessageResponse;
 import com.example.alamnibackend.service.CourseService;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/courses")
@@ -59,4 +61,15 @@ public class CourseController {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Course not found."));
         }
     }
+    @GetMapping("/count")
+    public ResponseEntity<Long> getTotalCourses() {
+        long totalCourses = courseService.getTotalCourses();
+        return ResponseEntity.ok(totalCourses);
+    }
+    @GetMapping("/courses-per-category")
+    public List<CategoryCount> getCoursesPerCategory() {
+        return courseService.getCoursesPerCategory();
+    }
+
+
 }

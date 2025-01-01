@@ -1,12 +1,15 @@
 package com.example.alamnibackend.service;
 
+import com.example.alamnibackend.models.CategoryCount;
 import com.example.alamnibackend.models.Course;
 import com.example.alamnibackend.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CourseService {
@@ -51,4 +54,13 @@ public class CourseService {
         }
         return false;
     }
+    public long getTotalCourses() {
+        return courseRepository.count();
+    }
+    public List<CategoryCount> getCoursesPerCategory() {
+        return courseRepository.countCoursesByCategory();
+    }
+
+
+
 }

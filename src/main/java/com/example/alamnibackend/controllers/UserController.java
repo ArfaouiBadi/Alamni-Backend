@@ -109,4 +109,21 @@ public class UserController {
         User user = userService.disenrollFromCourse(userId, courseId);
         return ResponseEntity.ok(new MessageResponse("User disenrolled from course successfully"));
     }
+    @GetMapping("/count")
+    public ResponseEntity<Long> getTotalUsers() {
+        long totalUsers = userService.getTotalUsers();
+        return ResponseEntity.ok(totalUsers);
+    }
+    @GetMapping("/total-enrolled-courses")
+    public ResponseEntity<Long> getTotalEnrolledCourses() {
+        long totalEnrolledCourses = userService.getTotalEnrolledCourses();
+        return ResponseEntity.ok(totalEnrolledCourses);
+    }
+    @GetMapping("/age-distribution")
+    public ResponseEntity<Map<String, Long>> getUsersByAgeGroup() {
+        Map<String, Long> ageDistribution = userService.getUsersByAgeGroup();
+        return ResponseEntity.ok(ageDistribution);
+    }
+
+
 }

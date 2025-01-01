@@ -9,10 +9,8 @@ import com.example.alamnibackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.time.LocalDate;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -71,7 +69,9 @@ public class UserService {
             return false;
         }
     }
-
+    public long getTotalUsers() {
+        return userRepository.count();
+    }
     public Enrollment enrollInCourse(String userId, String courseId) {
         Optional<User> userOptional = userRepository.findById(userId);
         Optional<Course> courseOptional = courseRepository.findById(courseId);
@@ -136,4 +136,37 @@ public class UserService {
             throw new RuntimeException("User or Course not found");
         }
     }
+    public long getTotalEnrolledCourses() {
+        List<User> users = userRepository.findAll();
+        long totalEnrolledCourses = 0;
+
+        for (User user : users) {
+            totalEnrolledCourses += user.getEnrolledCourses().size();
+        }
+
+        return totalEnrolledCourses;
+    }
+    public Map<String, Long> getUsersByAgeGroup() {
+        List<User> users = userRepository.findAll();
+        Map<String, Long> ageDistribution = new HashMap<>();
+
+        for (User user : users) {
+            int age = LocalDate.now().getYear() - user.getDateOfBirth().getYear();
+            String ageGroup = getAgeGroup(age);
+            ageDistribution.put(ageGroup, ageDistribution.getOrDefault(ageGroup, 0L) + 1);
+        }
+
+        return ageDistribution;
+    }
+
+    private String getAgeGroup(int age) {
+        if (age < 18) return "Under 18";
+        if (age < 25) return "18-24";
+        if (age < 35) return "25-34";
+        if (age < 45) return "35-44";
+        if (age < 60) return "45-59";
+        return "60+";
+    }
+
+
 }
