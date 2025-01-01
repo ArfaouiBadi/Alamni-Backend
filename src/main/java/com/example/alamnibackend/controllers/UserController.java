@@ -1,8 +1,6 @@
 package com.example.alamnibackend.controllers;
 
-import com.example.alamnibackend.models.ERole;
-import com.example.alamnibackend.models.Role;
-import com.example.alamnibackend.models.User;
+import com.example.alamnibackend.models.*;
 import com.example.alamnibackend.payload.response.MessageResponse;
 import com.example.alamnibackend.repository.RoleRepository;
 import com.example.alamnibackend.repository.UserRepository;
@@ -12,7 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/users")
@@ -77,5 +77,36 @@ public class UserController {
         }
         userRepository.save(user);
         return ResponseEntity.ok(new MessageResponse("User roles updated successfully."));
+    }
+    @PostMapping("/enroll")
+    public ResponseEntity<?> enrollInCourse(@RequestBody Map<String, String> request) {
+        String userId = request.get("userId");
+        String courseId = request.get("courseId");
+        if (userId == null || courseId == null) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: userId and courseId are required."));
+        }
+        System.out.println(userService.isUserEnrolledInCourse(userId, courseId));
+        if (userService.isUserEnrolledInCourse(userId, courseId)) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: User already enrolled in course."));
+        }
+        Enrollment enrollment = userService.enrollInCourse(userId, courseId);
+        return ResponseEntity.ok(new MessageResponse("User enrolled in course successfully"));
+    }
+
+    @GetMapping("/enrolled-courses")
+    public ResponseEntity<Set<Course>> getEnrolledCourses(@RequestParam String userId) {
+        Set<Course> courses = userService.getEnrolledCourses(userId);
+        return ResponseEntity.ok(courses);
+    }
+
+    @DeleteMapping("/disenroll")
+    public ResponseEntity<?> disenrollFromCourse(@RequestBody Map<String, String> request) {
+        String userId = request.get("userId");
+        String courseId = request.get("courseId");
+        if (userId == null || courseId == null) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: userId and courseId are required."));
+        }
+        User user = userService.disenrollFromCourse(userId, courseId);
+        return ResponseEntity.ok(new MessageResponse("User disenrolled from course successfully"));
     }
 }

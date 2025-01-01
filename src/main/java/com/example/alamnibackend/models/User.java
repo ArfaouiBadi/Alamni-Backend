@@ -5,9 +5,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -27,7 +24,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @AllArgsConstructor
 public class User {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private String id;
   @NotBlank
   @Size(max = 20)
@@ -50,11 +46,14 @@ public class User {
   private LocalDate dateOfBirth;
   @DBRef
   private Set<Role> roles = new HashSet<>();
+  @DBRef
+  private Set<Enrollment> enrollments;
   private boolean enabled = false;
+  private int points;
+  private int level;
+  private int xp;
 
-  private int points ;
-  private int level ;
-  public User(String email, String firstName, String lastName, String username, ERole role, String encode, LocalDate dateOfBirth, int points, int level) {
+  public User(String email, String firstName, String lastName, String username, ERole role, String encode, LocalDate dateOfBirth, int points, int level, int xp, Set<Enrollment> enrollments) {
     this.username = username;
     this.dateOfBirth = dateOfBirth;
     this.email = email;
@@ -66,6 +65,18 @@ public class User {
     this.enabled = false;
     this.points = points;
     this.level = level;
+    this.xp = xp;
+    this.enrollments = new HashSet<>();
   }
 
+  public Set<Course> getEnrolledCourses() {
+    Set<Course> courses = new HashSet<>();
+    if (enrollments == null) {
+      return courses;
+    }
+    for (Enrollment enrollment : enrollments) {
+      courses.add(enrollment.getCourse());
+    }
+    return courses;
+  }
 }
