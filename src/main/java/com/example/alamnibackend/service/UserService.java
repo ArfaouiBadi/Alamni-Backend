@@ -69,6 +69,11 @@ public class UserService {
             return false;
         }
     }
+    public User getUserByUsername(String username) {
+        Optional<User> user = userRepository.findByUsername(username);
+        return user.orElse(null);
+    }
+
     public long getTotalUsers() {
         return userRepository.count();
     }

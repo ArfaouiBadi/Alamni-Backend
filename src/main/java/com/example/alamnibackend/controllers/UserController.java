@@ -61,6 +61,15 @@ public class UserController {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: User not found."));
         }
     }
+    @GetMapping("/username/{username}")
+    public ResponseEntity<?> getUserByUserName(@PathVariable String username) {
+        User user = userService.getUserByUsername(username);
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: User not found."));
+        }
+    }
 
     @PutMapping("/{id}/roles")
     public ResponseEntity<?> updateUserRoles(@PathVariable String id, @RequestBody List<String> roleNames) {
@@ -78,6 +87,8 @@ public class UserController {
         userRepository.save(user);
         return ResponseEntity.ok(new MessageResponse("User roles updated successfully."));
     }
+
+
     @PostMapping("/enroll")
     public ResponseEntity<?> enrollInCourse(@RequestBody Map<String, String> request) {
         String userId = request.get("userId");
