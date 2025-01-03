@@ -23,4 +23,8 @@ public class EnrollmentController {
     public Optional<Course> getLastUnfinishedCourse(@PathVariable String userId) {
         return enrollmentService.findLastUnfinishedCourseByUserId(userId);
     }
+    @GetMapping("/total-enrollment-count")
+    public long getTotalEnrollmentCount() {
+        return enrollmentService.countTotalEnrollments();
+    }
 }

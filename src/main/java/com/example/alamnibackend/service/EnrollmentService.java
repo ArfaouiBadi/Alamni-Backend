@@ -32,4 +32,7 @@ public class EnrollmentService {
                 .map(Enrollment::getCourse)
                 .findFirst();
     }
+    public long countTotalEnrollments() {
+        return enrollmentRepository.count();
+    }
 }
