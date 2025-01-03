@@ -172,6 +172,14 @@ public class UserService {
         if (age < 60) return "45-59";
         return "60+";
     }
+    public Set<Course> getEnrolledCoursesByUsername(String username) {
+        User user = getUserByUsername(username);
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
+        return user.getEnrolledCourses();
+    }
+
 
 
 }

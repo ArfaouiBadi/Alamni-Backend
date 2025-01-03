@@ -135,6 +135,15 @@ public class UserController {
         Map<String, Long> ageDistribution = userService.getUsersByAgeGroup();
         return ResponseEntity.ok(ageDistribution);
     }
+    @GetMapping("/enrolled-courses/username/{username}")
+    public ResponseEntity<?> getEnrolledCoursesByUsername(@PathVariable String username) {
+        try {
+            Set<Course> courses = userService.getEnrolledCoursesByUsername(username);
+            return ResponseEntity.ok(courses);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+        }
+    }
 
 
 }
