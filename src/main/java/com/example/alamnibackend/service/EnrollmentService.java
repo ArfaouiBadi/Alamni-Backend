@@ -42,7 +42,7 @@ public class EnrollmentService {
         return enrollments.stream()
                 .filter(enrollment -> !enrollment.isFinished())
                 .map(enrollment -> Map.of(
-                        "name", enrollment.getCourse().getTitle(),
+                        "title", enrollment.getCourse().getTitle(),
                         "description", enrollment.getCourse().getDescription(),
                         "imageUrl", enrollment.getCourse().getImageUrl()
                 ))
@@ -54,7 +54,7 @@ public class EnrollmentService {
         return enrollments.stream()
                 .filter(Enrollment::isFinished)
                 .map(enrollment -> Map.of(
-                        "name", enrollment.getCourse().getTitle(),
+                        "title", enrollment.getCourse().getTitle(),
                         "description", enrollment.getCourse().getDescription(),
                         "imageUrl", enrollment.getCourse().getImageUrl()
                 ))
