@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -27,4 +28,13 @@ public class EnrollmentController {
     public long getTotalEnrollmentCount() {
         return enrollmentService.countTotalEnrollments();
     }
+    @GetMapping("/user/{userId}/unfinished-courses")
+    public List<Map<String, String>> getUnfinishedCoursesByUserId(@PathVariable String userId) {
+        return enrollmentService.findUnfinishedCoursesByUserId(userId);
+    }
+    @GetMapping("/user/{userId}/finished-courses")
+    public List<Map<String, String>> getFinishedCoursesByUserId(@PathVariable String userId) {
+        return enrollmentService.findFinishedCoursesByUserId(userId);
+    }
+
 }

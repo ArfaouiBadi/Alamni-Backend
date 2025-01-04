@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -35,4 +36,27 @@ public class EnrollmentService {
     public long countTotalEnrollments() {
         return enrollmentRepository.count();
     }
+    public List<Map<String, String>> findUnfinishedCoursesByUserId(String userId) {
+        List<Enrollment> enrollments = enrollmentRepository.findByUserId(userId);
+
+        return enrollments.stream()
+                .filter(enrollment -> !enrollment.isFinished())
+                .map(enrollment -> Map.of(
+                        "name", enrollment.getCourse().getTitle(),
+                        "description", enrollment.getCourse().getDescription()
+                ))
+                .collect(Collectors.toList());
+    }
+    public List<Map<String, String>> findFinishedCoursesByUserId(String userId) {
+        List<Enrollment> enrollments = enrollmentRepository.findByUserId(userId);
+
+        return enrollments.stream()
+                .filter(Enrollment::isFinished)
+                .map(enrollment -> Map.of(
+                        "name", enrollment.getCourse().getTitle(),
+                        "description", enrollment.getCourse().getDescription()
+                ))
+                .collect(Collectors.toList());
+    }
+
 }
