@@ -16,4 +16,16 @@ public class Lesson {
     private String pdfUrl;
     private boolean generateQuiz;
     private String content;
+
+    @Override
+    public String toString() {
+        return "Lesson{" +
+                "title='" + title + '\'' +
+                ", type='" + type + '\'' +
+                ", videoUrl='" + videoUrl + '\'' +
+                ", pdfUrl='" + pdfUrl + '\'' +
+                ", generateQuiz=" + generateQuiz +
+                ", content='" + content + '\'' +
+                '}';
+    }
 }

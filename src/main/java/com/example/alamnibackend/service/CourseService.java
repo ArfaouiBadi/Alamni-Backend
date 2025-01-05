@@ -31,6 +31,7 @@ public class CourseService {
 
     public Course updateCourse(String id, Course courseDetails) {
         Optional<Course> courseOptional = courseRepository.findById(id);
+        System.out.println("courseDetails"+courseDetails);
         if (courseOptional.isPresent()) {
             Course course = courseOptional.get();
             course.setTitle(courseDetails.getTitle());

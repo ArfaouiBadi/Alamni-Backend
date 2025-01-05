@@ -12,11 +12,14 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -62,6 +65,11 @@ public class WebSecurityConfig {
                     .requestMatchers("/api/auth/**").permitAll()
                     .requestMatchers("/api/test/**").permitAll()
                     .anyRequest().permitAll())
+            .headers(headers -> headers
+                    .contentSecurityPolicy(csp -> csp
+                            .policyDirectives("frame-ancestors 'self' http://localhost:4200 http://localhost:8000;"))) // Allow framing from specific origins
+
+            .cors(withDefaults()) // Enable CORS
             .oauth2Login(withDefaults());
 
     http.authenticationProvider(authenticationProvider());
@@ -69,4 +77,5 @@ public class WebSecurityConfig {
 
     return http.build();
   }
+
 }

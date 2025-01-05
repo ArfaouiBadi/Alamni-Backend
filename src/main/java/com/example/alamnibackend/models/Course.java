@@ -44,16 +44,14 @@ public class Course {
     @Min(1)
     private int duration; // In minutes
 
-    @DBRef
+    @DBRef(lazy = false)
     private Category category;
 
     private List<Module> modules;
     private RewardSystem rewardSystem;
 
-    @DBRef
+    @DBRef(lazy = false)
     private Set<Enrollment> enrollments;
-
-
 
     @Override
     public boolean equals(Object o) {
@@ -67,6 +65,7 @@ public class Course {
     public int hashCode() {
         return Objects.hash(id);
     }
+
     @Override
     public String toString() {
         return "Course{" +
@@ -79,6 +78,7 @@ public class Course {
                 ", category=" + category +
                 ", modules=" + modules +
                 ", rewardSystem=" + rewardSystem +
+                ", enrollments=" + enrollments +
                 '}';
     }
 }

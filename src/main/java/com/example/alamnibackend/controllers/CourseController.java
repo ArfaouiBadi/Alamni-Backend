@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -34,8 +35,8 @@ public class CourseController {
         }
     }
 
-    @PostMapping
-    public Course createCourse(@RequestBody Course course) {
+    @PostMapping(consumes = {"multipart/form-data"})
+    public Course createCourse(@ModelAttribute Course course) throws IOException {
         System.out.println(course);
         return courseService.createCourse(course);
     }
