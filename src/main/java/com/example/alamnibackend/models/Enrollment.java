@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,7 +16,6 @@ import java.util.Date;
 @AllArgsConstructor
 public class Enrollment {
     @Id
-
     private String id;
 
     @DBRef
@@ -28,4 +28,6 @@ public class Enrollment {
     private boolean finished;
     private Date startDate;
     private Date lastVisitedDate;
+
+    private List<String> completedLessons; // List of completed lesson IDs
 }

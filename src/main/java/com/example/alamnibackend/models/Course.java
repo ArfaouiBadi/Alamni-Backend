@@ -46,7 +46,7 @@ public class Course {
 
     @DBRef(lazy = false)
     private Category category;
-
+    @DBRef(lazy = false)
     private List<Module> modules;
     private RewardSystem rewardSystem;
 

@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
-public interface EnrollmentRepository extends MongoRepository<Enrollment, Long> {
+public interface EnrollmentRepository extends MongoRepository<Enrollment, String> {
     @Query("{ 'user.$id': ObjectId(?0) }")
     List<Enrollment> findByUserId(String userId);
 

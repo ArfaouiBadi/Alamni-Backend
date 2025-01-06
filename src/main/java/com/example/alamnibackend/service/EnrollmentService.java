@@ -17,11 +17,25 @@ public class EnrollmentService {
     @Autowired
     private EnrollmentRepository enrollmentRepository;
 
+
     public List<Course> findCoursesByUserId(String userId) {
         List<Enrollment> enrollments = enrollmentRepository.findByUserId(userId);
         return enrollments.stream()
                 .map(Enrollment::getCourse)
                 .collect(Collectors.toList());
+    }
+    public Enrollment markLessonAsCompleted(String enrollmentId, String lessonId) {
+        Optional<Enrollment> enrollmentOpt = enrollmentRepository.findById(enrollmentId);
+        if (enrollmentOpt.isPresent()) {
+            Enrollment enrollment = enrollmentOpt.get();
+            if (!enrollment.getCompletedLessons().contains(lessonId)) {
+                enrollment.getCompletedLessons().add(lessonId);
+                enrollmentRepository.save(enrollment);
+            }
+            return enrollment;
+        } else {
+            throw new RuntimeException("Enrollment not found");
+        }
     }
     public Optional<Course> findLastUnfinishedCourseByUserId(String userId) {
         List<Enrollment> enrollments = enrollmentRepository.findByUserId(userId);
