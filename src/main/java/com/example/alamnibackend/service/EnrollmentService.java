@@ -74,5 +74,8 @@ public class EnrollmentService {
                 ))
                 .collect(Collectors.toList());
     }
+    public List<Enrollment> getEnrollementsByUserId(String userId) {
+        return enrollmentRepository.findByUserId(userId);
+    }
 
 }

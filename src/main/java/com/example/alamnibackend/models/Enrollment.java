@@ -28,6 +28,5 @@ public class Enrollment {
     private boolean finished;
     private Date startDate;
     private Date lastVisitedDate;
-
     private List<String> completedLessons; // List of completed lesson IDs
 }

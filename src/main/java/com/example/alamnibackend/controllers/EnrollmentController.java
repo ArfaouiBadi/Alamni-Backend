@@ -18,7 +18,10 @@ public class EnrollmentController {
 
     @Autowired
     private EnrollmentService enrollmentService;
-
+    @GetMapping("/user/{userId}/enrollments")
+    public List<Enrollment> getEnrollmentsByUserId(@PathVariable String userId) {
+        return enrollmentService.getEnrollementsByUserId(userId);
+    }
     @GetMapping("/user/{userId}/courses")
     public List<Course> getCoursesByUserId(@PathVariable String userId) {
         return enrollmentService.findCoursesByUserId(userId);

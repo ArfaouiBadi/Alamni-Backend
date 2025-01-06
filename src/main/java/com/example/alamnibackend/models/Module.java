@@ -20,7 +20,6 @@ public class Module {
     private String id;
     private String title;
     private int duration; // In minutes
-    @DBRef
     private List<Lesson> lessons;
 
     @Override
