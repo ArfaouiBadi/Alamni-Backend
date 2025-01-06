@@ -37,9 +37,13 @@ public class Course {
     @Size(max = 500)
     private String description;
 
+
     @Min(1)
-    @Max(10)
+    @Max(100)
     private int levelRequired;
+    @Min(1)
+    @Max(10000)
+    private int pointsRequired;
 
     @Min(1)
     private int duration; // In minutes
@@ -74,6 +78,7 @@ public class Course {
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", levelRequired=" + levelRequired +
+                ", pointsRequired=" + pointsRequired +
                 ", duration=" + duration +
                 ", category=" + category +
                 ", modules=" + modules +

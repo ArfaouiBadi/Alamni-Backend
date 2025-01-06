@@ -37,6 +37,7 @@ public class CourseService {
             course.setTitle(courseDetails.getTitle());
             course.setDescription(courseDetails.getDescription());
             course.setLevelRequired(courseDetails.getLevelRequired());
+            course.setPointsRequired(courseDetails.getPointsRequired());
             course.setDuration(courseDetails.getDuration());
             course.setCategory(courseDetails.getCategory());
             course.setModules(courseDetails.getModules());

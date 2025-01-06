@@ -7,6 +7,8 @@ import com.example.alamnibackend.repository.CourseRepository;
 import com.example.alamnibackend.repository.EnrollmentRepository;
 import com.example.alamnibackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -77,21 +79,20 @@ public class UserService {
     public long getTotalUsers() {
         return userRepository.count();
     }
-    public Enrollment enrollInCourse(String userId, String courseId) {
+    public ResponseEntity<?> enrollInCourse(String userId, String courseId) {
         Optional<User> userOptional = userRepository.findById(userId);
         Optional<Course> courseOptional = courseRepository.findById(courseId);
-
         if (userOptional.isPresent() && courseOptional.isPresent()) {
             User user = userOptional.get();
             Course course = courseOptional.get();
             if (user.getEnrolledCourses().contains(course)) {
-                throw new RuntimeException("User already enrolled in course");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("user already enrolled in course");
             }
             if (user.getLevel() < course.getLevelRequired()) {
-                throw new RuntimeException("User level is not high enough to enroll in course");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("user level is not high enough to enroll in course");
             }
             if (user.getPoints() < course.getRewardSystem().getPoints()) {
-                throw new RuntimeException("User points are not high enough to enroll in course");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("user points are not high enough to enroll in course");
             }
             Enrollment enrollment = new Enrollment();
             enrollment.setUser(user);
@@ -100,9 +101,10 @@ public class UserService {
             enrollment.setFinished(false);
             enrollment.setStartDate(new Date());
             enrollment.setLastVisitedDate(new Date());
-            return enrollmentRepository.save(enrollment);
+            enrollmentRepository.save(enrollment);
+            return ResponseEntity.ok(enrollment);
         } else {
-            throw new RuntimeException("User or Course not found");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("user or Course not found");
         }
     }
 

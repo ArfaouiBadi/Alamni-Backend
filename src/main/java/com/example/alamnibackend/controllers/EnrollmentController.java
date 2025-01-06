@@ -52,4 +52,10 @@ public class EnrollmentController {
         }
     }
 
+    @GetMapping("/{courseId}/enrollments-count")
+    public ResponseEntity<Long> getEnrollmentsCountByCourseId(@PathVariable String courseId) {
+        long count = enrollmentService.countEnrollmentsByCourseId(courseId);
+        return ResponseEntity.ok(count);
+    }
+
 }

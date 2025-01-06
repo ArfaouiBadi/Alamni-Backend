@@ -94,14 +94,13 @@ public class UserController {
         String userId = request.get("userId");
         String courseId = request.get("courseId");
         if (userId == null || courseId == null) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Error: userId and courseId are required."));
+            return ResponseEntity.badRequest().body(new MessageResponse("userId and courseId are required."));
         }
         System.out.println(userService.isUserEnrolledInCourse(userId, courseId));
         if (userService.isUserEnrolledInCourse(userId, courseId)) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Error: User already enrolled in course."));
+            return ResponseEntity.badRequest().body(new MessageResponse("user already enrolled in course."));
         }
-        Enrollment enrollment = userService.enrollInCourse(userId, courseId);
-        return ResponseEntity.ok(new MessageResponse("User enrolled in course successfully"));
+        return userService.enrollInCourse(userId, courseId);
     }
 
     @GetMapping("/enrolled-courses")

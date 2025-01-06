@@ -77,5 +77,9 @@ public class EnrollmentService {
     public List<Enrollment> getEnrollementsByUserId(String userId) {
         return enrollmentRepository.findByUserId(userId);
     }
+    public long countEnrollmentsByCourseId(String courseId) {
+        return enrollmentRepository.countByCourseId(courseId);
+    }
+
 
 }
