@@ -36,8 +36,8 @@ public class CourseController {
         }
     }
 
-    @PostMapping(consumes = {"multipart/form-data"})
-    public Course createCourse(@ModelAttribute Course course) throws IOException {
+    @PostMapping()
+    public Course createCourse(@RequestBody Course course) {
         System.out.println(course);
         return courseService.createCourse(course);
     }

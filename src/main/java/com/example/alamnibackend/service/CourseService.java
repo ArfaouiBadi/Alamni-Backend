@@ -26,6 +26,7 @@ public class CourseService {
     }
 
     public Course createCourse(Course course) {
+        System.out.println("course"+course);
         return courseRepository.save(course);
     }
 
