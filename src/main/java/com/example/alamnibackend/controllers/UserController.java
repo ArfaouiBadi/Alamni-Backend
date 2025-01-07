@@ -143,6 +143,23 @@ public class UserController {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
+    @PutMapping("/{id}/update-name")
+    public ResponseEntity<?> updateUserName(@PathVariable String id, @RequestBody Map<String, String> nameDetails) {
+        String firstName = nameDetails.get("firstName");
+        String lastName = nameDetails.get("lastName");
+
+        if (firstName == null || lastName == null) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: firstName and lastName are required."));
+        }
+
+        User updatedUser = userService.updateUserNameById(id, firstName, lastName);
+        if (updatedUser != null) {
+            return ResponseEntity.ok(updatedUser);
+        } else {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: User not found."));
+        }
+    }
+
 
 
 }

@@ -10,8 +10,13 @@ import java.util.List;
 
 public interface CourseRepository extends MongoRepository<Course, String> {
     @Aggregation(pipeline = {
-            "{ '$group': { '_id': '$category', 'count': { '$sum': 1 } } }"
+            "{ '$lookup': { 'from': 'categories', 'localField': 'category.$id', 'foreignField': '_id', 'as': 'categoryDetails' } }",
+            "{ '$unwind': { 'path': '$categoryDetails', 'preserveNullAndEmptyArrays': false } }",
+            "{ '$group': { '_id': '$categoryDetails.name', 'count': { '$sum': 1 } } }",
+            "{ '$project': { 'category': '$_id', 'count': 1, '_id': 0 } }"
     })
     List<CategoryCount> countCoursesByCategory();
+
+
 
 }

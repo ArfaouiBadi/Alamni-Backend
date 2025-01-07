@@ -181,6 +181,18 @@ public class UserService {
         }
         return user.getEnrolledCourses();
     }
+    public User updateUserNameById(String id, String firstName, String lastName) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
+            return userRepository.save(user);
+        } else {
+            return null;
+        }
+    }
+
 
 
 
