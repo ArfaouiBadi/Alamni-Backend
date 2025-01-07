@@ -122,7 +122,7 @@ public class AuthController {
 				ERole.ROLE_USER,
 				encoder.encode(signUpRequest.getPassword()), // Encode the password
 				signUpRequest.getDateOfBirth(),
-				0,1,0,new HashSet<>()
+				100,1,new HashSet<>(),new HashSet<>()
 		);
 		// Assign the default role "ROLE_USER"
 		System.out.println("Role: " + roleRepository.findAll());

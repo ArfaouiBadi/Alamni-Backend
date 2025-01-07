@@ -49,11 +49,13 @@ public class User {
   @DBRef
   private Set<Enrollment> enrollments;
   private boolean enabled = false;
+
   private int points;
   private int level;
-  private int xp;
 
-  public User(String email, String firstName, String lastName, String username, ERole role, String encode, LocalDate dateOfBirth, int points, int level, int xp, Set<Enrollment> enrollments) {
+  private Set<Badge> badges;
+
+  public User(String email, String firstName, String lastName, String username, ERole role, String encode, LocalDate dateOfBirth, int points, int level, Set<Enrollment> enrollments, Set<Badge> badges) {
     this.username = username;
     this.dateOfBirth = dateOfBirth;
     this.email = email;
@@ -65,8 +67,8 @@ public class User {
     this.enabled = false;
     this.points = points;
     this.level = level;
-    this.xp = xp;
     this.enrollments = new HashSet<>();
+    this.badges = badges;
   }
 
   public Set<Course> getEnrolledCourses() {

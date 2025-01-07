@@ -4,23 +4,20 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RewardSystem {
-    private int points;
-    private List<Badge> badges;
-    private int levels;
+public class Badge {
+    private String name;
+    private String icon;
 
     @Override
     public String toString() {
-        return "RewardSystem{" +
-                "points=" + points +
-                ", badges=" + badges +
-                ", levels=" + levels +
+        return "Badge{" +
+                "name='" + name + '\'' +
+                ", icon='" + icon + '\'' +
                 '}';
     }
 }

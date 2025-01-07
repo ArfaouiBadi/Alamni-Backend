@@ -1,5 +1,6 @@
 package com.example.alamnibackend.service;
 
+import com.example.alamnibackend.models.Badge;
 import com.example.alamnibackend.models.Course;
 import com.example.alamnibackend.models.Enrollment;
 import com.example.alamnibackend.models.User;
@@ -191,6 +192,15 @@ public class UserService {
         } else {
             return null;
         }
+    }
+    public User addBadgeToUser(String userId, Badge badge) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        if (user.getBadges() == null) {
+            user.setBadges(new HashSet<>());
+        }
+        user.getBadges().add(badge);
+        return userRepository.save(user);
     }
 
 

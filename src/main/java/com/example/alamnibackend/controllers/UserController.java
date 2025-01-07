@@ -160,6 +160,12 @@ public class UserController {
         }
     }
 
+    @PostMapping("/{userId}/badges")
+    public ResponseEntity<?> addBadgeToUser(@PathVariable String userId, @RequestBody Badge badge) {
+        User updatedUser = userService.addBadgeToUser(userId, badge);
+        return ResponseEntity.ok(updatedUser);
+    }
+
 
 
 }
