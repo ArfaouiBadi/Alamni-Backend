@@ -232,6 +232,17 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public User updateLevelAndPoints(String userId, int newLevel, int newPoints) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setLevel(newLevel);
+            user.setPoints(newPoints);
+            return userRepository.save(user);
+        } else {
+            throw new RuntimeException("User not found");
+        }
+    }
 
 
 }

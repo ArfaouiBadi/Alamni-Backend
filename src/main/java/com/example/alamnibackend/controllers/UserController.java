@@ -170,6 +170,22 @@ public class UserController {
         User updatedUser = userService.updateUserRewards(userId, rewardData);
         return ResponseEntity.ok(updatedUser);
     }
+    @PutMapping("/{id}/update-level-points")
+    public ResponseEntity<?> updateLevelAndPoints(
+            @PathVariable String id,
+            @RequestBody Map<String, Integer> updates) {
+
+        Integer newLevel = updates.get("level");
+        Integer newPoints = updates.get("points");
+
+        try {
+            User updatedUser = userService.updateLevelAndPoints(id, newLevel, newPoints);
+            return ResponseEntity.ok(updatedUser);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+        }
+    }
+
 
 
 }
