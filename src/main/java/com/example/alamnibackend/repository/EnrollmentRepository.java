@@ -10,4 +10,5 @@ public interface EnrollmentRepository extends MongoRepository<Enrollment, String
     @Query("{ 'user.$id': ObjectId(?0) }")
     List<Enrollment> findByUserId(String userId);
     long countByCourseId(String courseId);
+    List<Enrollment> findByCourseId(String courseId);
 }

@@ -4,9 +4,13 @@ import com.example.alamnibackend.models.*;
 import com.example.alamnibackend.payload.response.MessageResponse;
 import com.example.alamnibackend.repository.RoleRepository;
 import com.example.alamnibackend.repository.UserRepository;
+import com.example.alamnibackend.service.CourseService;
 import com.example.alamnibackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +28,11 @@ public class UserController {
     private RoleRepository roleRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private JavaMailSender mailSender;
 
+    @Autowired
+    private CourseService courseService;
     @GetMapping
     public List<User> getAllUsers() {
         System.out.println("Get all users");
@@ -100,7 +108,25 @@ public class UserController {
         if (userService.isUserEnrolledInCourse(userId, courseId)) {
             return ResponseEntity.badRequest().body(new MessageResponse("user already enrolled in course."));
         }
-        return userService.enrollInCourse(userId, courseId);
+        ResponseEntity<?> response = userService.enrollInCourse(userId, courseId);
+        if (response.getStatusCode().is2xxSuccessful()) {
+            User user = userService.getUserById(userId);
+            Course course = courseService.getCourseById(courseId);
+            String email = user.getEmail();
+            String subject = "Enrollment Confirmation";
+            String message = "You have successfully enrolled in the course: " + course.getTitle() + ".\n" +
+                    "You can access the course here: " + "http://localhost:4200/course-details/" + courseId;
+            notifyUser(email, subject, message);
+        }
+        return response;
+    }
+
+    private void notifyUser(String email, String subject, String message) {
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(email);
+        mailMessage.setSubject(subject);
+        mailMessage.setText(message);
+        mailSender.send(mailMessage);
     }
 
     @GetMapping("/enrolled-courses")
