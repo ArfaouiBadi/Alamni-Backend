@@ -29,4 +29,5 @@ public class Enrollment {
     private Date startDate;
     private Date lastVisitedDate;
     private List<String> completedLessons; // List of completed lesson IDs
+    private int lessonsCount;
 }

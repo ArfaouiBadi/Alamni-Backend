@@ -82,4 +82,21 @@ public class EnrollmentService {
     }
 
 
+    public Enrollment updateEnrollment(String enrollmentId, Enrollment enrollmentDetails) {
+        Optional<Enrollment> enrollmentOpt = enrollmentRepository.findById(enrollmentId);
+        if (enrollmentOpt.isPresent()) {
+            Enrollment enrollment = enrollmentOpt.get();
+            enrollment.setStartDate(enrollmentDetails.getStartDate());
+            enrollment.setLastVisitedDate(enrollmentDetails.getLastVisitedDate());
+            enrollment.setLessonsCount(enrollmentDetails.getLessonsCount());
+            enrollment.setCompletedLessons(enrollmentDetails.getCompletedLessons());
+            enrollment.setFinished(enrollmentDetails.isFinished());
+            enrollment.setProgress(enrollmentDetails.getProgress());
+            enrollmentRepository.save(enrollment);
+            return enrollment;
+        } else {
+            return null;
+        }
+    }
+
 }

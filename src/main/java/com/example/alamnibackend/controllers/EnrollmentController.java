@@ -57,5 +57,14 @@ public class EnrollmentController {
         long count = enrollmentService.countEnrollmentsByCourseId(courseId);
         return ResponseEntity.ok(count);
     }
+    @PutMapping("/{enrollmentId}")
+    public ResponseEntity<?> updateEnrollment(@PathVariable String enrollmentId, @RequestBody Enrollment enrollmentDetails) {
+        Enrollment updatedEnrollment = enrollmentService.updateEnrollment(enrollmentId, enrollmentDetails);
+        if (updatedEnrollment != null) {
+            return ResponseEntity.ok(updatedEnrollment);
+        } else {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Enrollment not found."));
+        }
+    }
 
 }

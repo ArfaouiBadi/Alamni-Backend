@@ -1,9 +1,6 @@
 package com.example.alamnibackend.service;
 
-import com.example.alamnibackend.models.Badge;
-import com.example.alamnibackend.models.Course;
-import com.example.alamnibackend.models.Enrollment;
-import com.example.alamnibackend.models.User;
+import com.example.alamnibackend.models.*;
 import com.example.alamnibackend.repository.CourseRepository;
 import com.example.alamnibackend.repository.EnrollmentRepository;
 import com.example.alamnibackend.repository.UserRepository;
@@ -92,9 +89,20 @@ public class UserService {
             if (user.getLevel() < course.getLevelRequired()) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("user level is not high enough to enroll in course");
             }
-            if (user.getPoints() < course.getRewardSystem().getPoints()) {
+            int requiredPoints = course.getPointsRequired();
+            if (user.getPoints() < requiredPoints) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("user points are not high enough to enroll in course");
             }
+
+            // Count the lessons in the course modules
+            int lessonsCount = course.getModules().stream()
+                    .mapToInt(module -> module.getLessons().size())
+                    .sum();
+
+            // Reduce the user's points
+            user.setPoints(user.getPoints() - requiredPoints);
+            userRepository.save(user);
+
             Enrollment enrollment = new Enrollment();
             enrollment.setUser(user);
             enrollment.setCourse(course);
@@ -102,6 +110,8 @@ public class UserService {
             enrollment.setFinished(false);
             enrollment.setStartDate(new Date());
             enrollment.setLastVisitedDate(new Date());
+            enrollment.setCompletedLessons(new ArrayList<>(lessonsCount));
+            enrollment.setLessonsCount(lessonsCount); // Set the lessons count
             enrollmentRepository.save(enrollment);
             return ResponseEntity.ok(enrollment);
         } else {
@@ -202,7 +212,25 @@ public class UserService {
         user.getBadges().add(badge);
         return userRepository.save(user);
     }
+    public User updateUserRewards(String userId, RewardSystem rewardData) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
+        if (rewardData.getPoints() != 0) {
+            user.setPoints(user.getPoints() + rewardData.getPoints());
+        }
+        if (rewardData.getBadges() != null) {
+            if (user.getBadges() == null) {
+                user.setBadges(new HashSet<>());
+            }
+            user.getBadges().addAll(rewardData.getBadges());
+        }
+        if (rewardData.getLevels() != 0) {
+            user.setLevel(user.getLevel() + rewardData.getLevels());
+        }
+
+        return userRepository.save(user);
+    }
 
 
 

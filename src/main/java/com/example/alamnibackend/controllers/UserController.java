@@ -165,7 +165,11 @@ public class UserController {
         User updatedUser = userService.addBadgeToUser(userId, badge);
         return ResponseEntity.ok(updatedUser);
     }
-
+    @PostMapping("/{userId}/rewards")
+    public ResponseEntity<?> updateUserRewards(@PathVariable String userId, @RequestBody RewardSystem rewardData) {
+        User updatedUser = userService.updateUserRewards(userId, rewardData);
+        return ResponseEntity.ok(updatedUser);
+    }
 
 
 }
