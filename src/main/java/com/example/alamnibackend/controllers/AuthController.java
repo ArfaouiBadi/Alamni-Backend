@@ -169,8 +169,8 @@ public class AuthController {
 	 * @param email The email of the user to check.
 	 * @return A ResponseEntity indicating whether the user is enabled or not.
 	 */
-	@GetMapping("/check-email-verification")
-	public ResponseEntity<?> checkEmailVerification(@RequestParam("email") String email) {
+	@GetMapping("/{email}/check-email-verification")
+	public ResponseEntity<?> checkEmailVerification(@PathVariable("email") String email) {
 		Optional<User> userOptional = Optional.ofNullable(userRepository.findByEmail(email));
 		if (userOptional.isPresent()) {
 			User user = userOptional.get();
